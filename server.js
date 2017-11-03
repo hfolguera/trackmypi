@@ -15,6 +15,6 @@ client.on('message', function (topic,message) {
 	fs.appendFile('gps_results.txt', message+'\n', function(err) {
 		if (err) {
 			fs.appendFile('error.log',err);
-		}*/
-	});
+		}
+	});*/
 });
