@@ -9,7 +9,7 @@ client.on('connect',function (){
 })
 
 client.on('message', function (topic,message) {
-	console.log(message)
+	console.log(message);
 	/*var jsonMessage = JSON.parse(message);
 	console.log(jsonMessage);
 	fs.appendFile('gps_results.txt', message+'\n', function(err) {
@@ -18,4 +18,3 @@ client.on('message', function (topic,message) {
 		}*/
 	});
 });
-
