@@ -19,6 +19,6 @@ client.on('message', function (topic,message) {
 			}
 		});*/
 	} catch (ex){
-		callback(ex);
+		console.log("Exception!");
 	}
 });
