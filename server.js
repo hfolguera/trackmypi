@@ -3,26 +3,6 @@ var client = mqtt.connect('mqtt://test.mosquitto.org')
 
 //var fs = require('fs')
 
-client.on('connect',function (){
-	client.subscribe('hfolguera')
-	console.log("Up & Running!");
-})
-
-client.on('message', function (topic,message) {
-	try{
-		console.log(message.toString());
-		var jsonMessage = JSON.parse(message.toString());
-		console.log(jsonMessage);
-		/*fs.appendFile('gps_results.txt', message+'\n', function(err) {
-			if (err) {
-				fs.appendFile('error.log',err);
-			}
-		});*/
-	} catch (ex){
-		console.log("Exception!");
-	}
-});
-
 var mongodb = require('mongodb');
 var db = null;
 var mongoURL = "mongodb://pi:raspberry@10.129.24.20:27017/trackmypidb";
@@ -42,3 +22,23 @@ try{
 	console.log("ERROR: Can't connect to mongodb!");
 	console.log(ex);
 }
+
+client.on('connect',function (){
+	client.subscribe('hfolguera')
+	console.log("Up & Running!");
+})
+
+client.on('message', function (topic,message) {
+	try{
+		console.log(message.toString());
+		var jsonMessage = JSON.parse(message.toString());
+		console.log(jsonMessage);
+		/*fs.appendFile('gps_results.txt', message+'\n', function(err) {
+			if (err) {
+				fs.appendFile('error.log',err);
+			}
+		});*/
+	} catch (ex){
+		console.log("Exception!");
+	}
+});
