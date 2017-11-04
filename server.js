@@ -7,21 +7,24 @@ var mongodb = require('mongodb');
 var db = null;
 var mongoURL = "mongodb://pi:raspberry@10.129.24.20:27017/trackmypidb";
 var testenv = process.env.OPENSHIFT_MONGODB_DB_URL;
-try{
-	console.log("Test: "+testenv);
-	mongodb.connect(mongoURL, function(err, conn) {
-		if (err) {
-			callback(err);
-			return;
-		}
 
-		db = conn;
-		console.log('Connected to MongoDB at: %s', mongoURL);
-		});
-}catch(ex){
-	console.log("ERROR: Can't connect to mongodb!");
-	console.log(ex);
-}
+var initDb = function(callback) {
+	try{
+		console.log("Test: "+testenv);
+		mongodb.connect(mongoURL, function(err, conn) {
+			if (err) {
+				callback(err);
+				return;
+			}
+
+			db = conn;
+			console.log('Connected to MongoDB at: %s', mongoURL);
+			});
+	}catch(ex){
+		console.log("ERROR: Can't connect to mongodb!");
+		console.log(ex);
+	}
+};
 
 client.on('connect',function (){
 	client.subscribe('hfolguera')
@@ -29,6 +32,9 @@ client.on('connect',function (){
 })
 
 client.on('message', function (topic,message) {
+	if (db == null) {
+		initDb(function(err){});
+	}
 	try{
 		console.log(message.toString());
 		var jsonMessage = JSON.parse(message.toString());
