@@ -10,7 +10,7 @@ var testenv = process.env.OPENSHIFT_MONGODB_DB_URL;
 
 var initDb = function(callback) {
 	try{
-		//console.log("Test: "+testenv);
+		console.log("Test: "+testenv);
 		mongodb.connect(mongoURL, function(err, conn) {
 			if (err) {
 				callback(err);
@@ -30,12 +30,14 @@ client.on('connect',function (){
 	client.subscribe('hfolguera')
 	console.log("Up & Running!");
 	if (db == null) {
+		console.log("Inicialitzant DB...");
 		initDb(function(err){});
 	}
 });
 
 client.on('message', function (topic,message) {
 	if (db == null) {
+		console.log("Inicialitzant DB...");
 		initDb(function(err){});
 	}else{
 		try{
