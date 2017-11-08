@@ -10,7 +10,7 @@ var testenv = process.env.OPENSHIFT_MONGODB_DB_URL;
 
 var initDb = function(callback) {
 	try{
-		console.log("Test: "+testenv);
+		//console.log("Test: "+testenv);
 		mongodb.connect(mongoURL, function(err, conn) {
 			if (err) {
 				callback(err);
@@ -39,7 +39,7 @@ client.on('message', function (topic,message) {
 		initDb(function(err){});
 	}
 	try{
-		console.log(message.toString());
+		console.log("RAW Message: "+message.toString());
 		db.collection("tpv").insertOne(message.toString(), function(err, res) {
     if (err) throw err;
     	console.log("1 document inserted");
@@ -50,5 +50,6 @@ client.on('message', function (topic,message) {
 
 	} catch (ex){
 		console.log("Exception!");
+		console.log(ex);
 	}
 });
