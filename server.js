@@ -29,17 +29,29 @@ var initDb = function(callback) {
 client.on('connect',function (){
 	client.subscribe('hfolguera')
 	console.log("Up & Running!");
-	if (db == null) {
+	if (!db) {
 		console.log("Inicialitzant DB...");
 		initDb(function(err){});
 	}
 });
 
 client.on('message', function (topic,message) {
-	if (db == null) {
-		console.log("Inicialitzant DB...");
-		initDb(function(err){});
-	}else{
+	if (!db) {
+		console.log("Inicialitzant DB manualment...");
+		//initDb(function(err){});
+		try{
+			console.log("Test: "+testenv);
+			mongodb.connect(mongoURL, function(err, conn) {
+				if (err) {
+					callback(err);
+					return;
+				}
+
+				db = conn;
+				console.log('Connected to MongoDB at: %s', mongoURL);
+				});
+		}
+	}
 		try{
 			console.log("RAW Message: "+message.toString());
 			db.collection("tpv").insertOne(message.toString(), function(err, res) {
@@ -54,5 +66,5 @@ client.on('message', function (topic,message) {
 			console.log("Exception!");
 			console.log(ex);
 		}
-	}
+
 });
