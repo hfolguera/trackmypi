@@ -37,19 +37,20 @@ client.on('connect',function (){
 client.on('message', function (topic,message) {
 	if (db == null) {
 		initDb(function(err){});
-	}
-	try{
-		console.log("RAW Message: "+message.toString());
-		db.collection("tpv").insertOne(message.toString(), function(err, res) {
-    if (err) throw err;
-    	console.log("1 document inserted");
-  	});
+	}else{
+		try{
+			console.log("RAW Message: "+message.toString());
+			db.collection("tpv").insertOne(message.toString(), function(err, res) {
+			if (err) throw err;
+				console.log("1 document inserted");
+			});
 
-		var jsonMessage = JSON.parse(message.toString());
-		console.log(jsonMessage);
+			var jsonMessage = JSON.parse(message.toString());
+			console.log(jsonMessage);
 
-	} catch (ex){
-		console.log("Exception!");
-		console.log(ex);
+		} catch (ex){
+			console.log("Exception!");
+			console.log(ex);
+		}
 	}
 });
