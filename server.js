@@ -29,7 +29,10 @@ var initDb = function(callback) {
 client.on('connect',function (){
 	client.subscribe('hfolguera')
 	console.log("Up & Running!");
-})
+	if (db == null) {
+		initDb(function(err){});
+	}
+});
 
 client.on('message', function (topic,message) {
 	if (db == null) {
@@ -37,13 +40,14 @@ client.on('message', function (topic,message) {
 	}
 	try{
 		console.log(message.toString());
+		db.collection("tpv").insertOne(message.toString(), function(err, res) {
+    if (err) throw err;
+    	console.log("1 document inserted");
+  	});
+
 		var jsonMessage = JSON.parse(message.toString());
 		console.log(jsonMessage);
-		/*fs.appendFile('gps_results.txt', message+'\n', function(err) {
-			if (err) {
-				fs.appendFile('error.log',err);
-			}
-		});*/
+
 	} catch (ex){
 		console.log("Exception!");
 	}
